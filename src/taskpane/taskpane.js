@@ -42,13 +42,10 @@ function createImageBase64() {
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  
-  //const imageSize = (canvas.width - (numPictures + 1) * padding) / numPictures
-  ctx.fillStyle = '#DDDDDD';
-
   var img = new Image();
-    
   img.src = "data:image/png;base64," + base64Image;
+
+  ctx.fillStyle = '#DDDDDD';
 
   for (let i = 1; i <= numPictures; i++) {
     ctx.fillRect(padding * i + imageSize * (i - 1), padding, imageSize, imageSize);
