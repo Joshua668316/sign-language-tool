@@ -34,13 +34,16 @@ function insertImage() {
 function createImageBase64() {
   var words = document.getElementById("text-input").value.split(/\s+/);
   const numPictures = words.length;
-  const width = 1225;
-  const height = 1500 / numPictures
+  const imageSize = 245
+  const padding = 20;
+  const textSpace = 80; 
+  const width = imageSize * numPictures + padding * (numPictures + 1);
+  const height = imageSize + textSpace
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  const padding = 20;
-  const imageSize = (canvas.width - (numPictures + 1) * padding) / numPictures
+  
+  //const imageSize = (canvas.width - (numPictures + 1) * padding) / numPictures
   ctx.fillStyle = '#DDDDDD';
 
   var img = new Image();
