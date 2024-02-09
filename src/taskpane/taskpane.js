@@ -45,11 +45,17 @@ function createImageBase64() {
   var img = new Image();
   img.src = "data:image/png;base64," + base64Image;
 
+  const scale = imageSize / Math.max(img.naturalWidth, img.naturalHeight);
+  const imgWidth = scale * img.naturalWidth;
+  const imgHeight = scale * img.naturalHeight;
+  const dx = (imageSize - imgWidth) / 2;
+  const dy = (imageSize - imgHeight) / 2;
+
   ctx.fillStyle = '#DDDDDD';
 
   for (let i = 1; i <= numPictures; i++) {
     ctx.fillRect(padding * i + imageSize * (i - 1), padding, imageSize, imageSize);
-    ctx.drawImage(img, padding * i + imageSize * (i - 1), padding, imageSize, imageSize * 0.7);
+    ctx.drawImage(img, padding * i + imageSize * (i - 1) + dx, padding + dy, imgWidth, imgHeight);
   }
 
   // Set text style
