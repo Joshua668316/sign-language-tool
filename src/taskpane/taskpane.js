@@ -66,24 +66,6 @@ function createImageBase64() {
   return canvas.toDataURL().split(',')[1];
 }
 
-function insertText() {
-  Office.context.document.setSelectedDataAsync(
-    document.getElementById("text-input").value,
-    {
-      coercionType: Office.CoercionType.Text
-    },
-    (asyncResult) => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        setMessage("Error: " + asyncResult.error.message);
-      }
-    }
-  )
-}
-
-// TODO7: Define the getSlideMetadata function.
-
-// TODO9: Define the addSlides and navigation functions.
-
 async function clearMessage(callback) {
   document.getElementById("message").innerText = "";
   await callback();
