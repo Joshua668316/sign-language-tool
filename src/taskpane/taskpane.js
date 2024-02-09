@@ -12,9 +12,6 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("insert-image").onclick = () => clearMessage(insertImage);
-    document.getElementById("insert-text").onclick = () => clearMessage(insertText);
-    // TODO6: Assign event handler for get-slide-metadata button.
-    // TODO8: Assign event handlers for add-slides and the four navigation buttons.
   }
 });
 
@@ -94,14 +91,4 @@ async function clearMessage(callback) {
 
 function setMessage(message) {
   document.getElementById("message").innerText = message;
-}
-
-// Default helper for invoking an action and handling errors.
-async function tryCatch(callback) {
-  try {
-    document.getElementById("message").innerText = "";
-    await callback();
-  } catch (error) {
-    setMessage("Error: " + error.toString());
-  }
 }
