@@ -16,27 +16,27 @@ Office.onReady((info) => {
 
 async function readImages() {
   const files = document.getElementById("fileElem").files;
-  let images = Array.from(files).map(file => {
+  let imagePromises = Array.from(files).map(file => {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onload = e => {
         const img = new Image();
-        img.onload = () => resolve(img); 
+        img.onload = () => resolve({ name: file.name, image: img }); 
         img.onerror = reject; 
         img.src = e.target.result;
       };
-      reader.onerror = reject; 
+      reader.onerror = reject;
       reader.readAsDataURL(file);
     });
   });
-  let res = await Promise.all(images);
-  return res;
+  let images = await Promise.all(imagePromises); 
+  return new Map(images.map(obj => [obj.name, obj.image])); 
 }
 
 async function submitTextAndImages() {
   var words = document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
   const images = await readImages();
-  const base64Image = createCanvasBase64(images[0], words);
+  const base64Image = createCanvasBase64(images.get(images.keys().next().value), words);
   insertImage(base64Image);
 }
 
