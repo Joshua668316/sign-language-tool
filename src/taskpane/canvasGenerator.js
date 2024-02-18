@@ -37,7 +37,7 @@ function drawText(ctx, conf, words) {
   }
 }
 
-export function createImageBase64(img, words) {
+export function createCanvasBase64(img, words) {
     const numPictures = words.length;
     const imageSize = 245
     const padding = 20;
