@@ -24,7 +24,6 @@ function readImages(handleResult) {
 }
 
 function submitTextAndImages() {
-  const file = document.getElementById("fileElem").files[0];
   var words = document.getElementById("text-input").value.split(/\s+/);
   readImages((result) => {
     const img = new Image();
