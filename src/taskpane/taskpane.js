@@ -11,27 +11,27 @@ const { createCanvas } = require('canvas');
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
-    document.getElementById("insert-image").onclick = () => clearMessage(image => insertImage(createImageBase64()));
-    document.getElementById("fileElem").onchange = () => clearMessage(handleFiles);
+    document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
   }
 });
 
-function handleFiles() {  
-  insertText(document.getElementById("fileElem").files[0].name);
+function readImages(handleResult) {
+  const file = document.getElementById("fileElem").files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    handleResult(e.target.result);
+  }
+  reader.readAsDataURL(file);
 }
 
-function insertText(text) {
-  Office.context.document.setSelectedDataAsync(
-    text,
-    {
-      coercionType: Office.CoercionType.Text
-    },
-    (asyncResult) => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        setMessage("Error: " + asyncResult.error.message);
-      }
-    }
-  );
+function submitTextAndImages() {
+  const file = document.getElementById("fileElem").files[0];
+  readImages((result) => {
+    const img = new Image();
+    img.src = result;
+    const base64Image = createImageBase64(img.src)
+    insertImage(base64Image);
+  });
 }
 
 function insertImage(image) {
@@ -49,7 +49,7 @@ function insertImage(image) {
 }
 
 
-function createImageBase64() {
+function createImageBase64(base64Image) {
   var words = document.getElementById("text-input").value.split(/\s+/);
   const numPictures = words.length;
   const imageSize = 245
@@ -61,7 +61,7 @@ function createImageBase64() {
   const ctx = canvas.getContext('2d');
 
   var img = new Image();
-  img.src = "data:image/png;base64," + base64Image;
+  img.src = base64Image;
 
   const scale = imageSize / Math.max(img.naturalWidth, img.naturalHeight);
   const imgWidth = scale * img.naturalWidth;
