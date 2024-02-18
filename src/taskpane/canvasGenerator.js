@@ -1,6 +1,6 @@
 const { createCanvas } = require('canvas');
 
-function canvasConfig(imageSize, padding, textSpace, numPictures, img) {
+function canvasConfig(imageSize, padding, textSpace, numPictures) {
   this.imageSize = imageSize;
   this.padding = padding;
   this.textSpace = textSpace;
@@ -8,20 +8,32 @@ function canvasConfig(imageSize, padding, textSpace, numPictures, img) {
     
   this.width = imageSize * numPictures + padding * (numPictures + 1);
   this.height = imageSize + textSpace;
-    
-  this.scale = imageSize / Math.max(img.naturalWidth, img.naturalHeight);
-  this.imgWidth = this.scale * img.naturalWidth;
-  this.imgHeight = this.scale * img.naturalHeight;
-  this.dx = (this.imageSize - this.imgWidth) / 2;
-  this.dy = (this.imageSize - this.imgHeight) / 2;
+}
+
+function imageTransformation(conf, naturalWidth, naturalHeight, i) {
+  const scale = conf.imageSize / Math.max(naturalWidth, naturalHeight);
+  const imgWidth = scale * naturalWidth;
+  const imgHeight = scale * naturalHeight;
+  const dx = (conf.imageSize - imgWidth) / 2;
+  const dy = (conf.imageSize - imgHeight) / 2;
+  const x = conf.padding * i + conf.imageSize * (i - 1) + dx;
+  const y = conf.padding + dy;
+  return {x, y, imgWidth, imgHeight};
+}
+
+function textTransformation(conf, i) {
+  const x = conf.padding * i + conf.imageSize * (i - 0.5);
+  const y = 0.9 * conf.height;
+  return {x, y}
 }
 
 function drawImages(ctx, conf, img) {
   ctx.fillStyle = '#DDDDDD';
-  
+ 
   for (let i = 1; i <= conf.numPictures; i++) {
-    ctx.fillRect(conf.padding * i + conf.imageSize * (i - 1), conf.padding, conf.imageSize, conf.imageSize);
-    ctx.drawImage(img, conf.padding * i + conf.imageSize * (i - 1) + conf.dx, conf.padding + conf.dy, conf.imgWidth, conf.imgHeight);
+    let {x, y, imgWidth, imgHeight} = imageTransformation(conf, img.naturalWidth, img.naturalHeight, i);
+    //ctx.fillRect((i - 1) * conf.imageSize, 0, conf.imageSize, conf.imageSize);
+    ctx.drawImage(img, x, y, imgWidth, imgHeight);
   }
 }
 
@@ -33,7 +45,8 @@ function drawText(ctx, conf, words) {
   ctx.textBaseline = 'middle';
 
   for (let i = 1; i <= conf.numPictures; i++) {
-    ctx.fillText(words[i - 1], conf.padding * i + conf.imageSize * (i - 0.5), 0.9 * conf.height);
+    let {x, y} = textTransformation(conf, i);
+    ctx.fillText(words[i - 1], x, y);
   }
 }
 
