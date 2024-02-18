@@ -16,6 +16,27 @@ function canvasConfig(imageSize, padding, textSpace, numPictures, img) {
   this.dy = (this.imageSize - this.imgHeight) / 2;
 }
 
+function drawImages(ctx, conf, img) {
+  ctx.fillStyle = '#DDDDDD';
+  
+  for (let i = 1; i <= conf.numPictures; i++) {
+    ctx.fillRect(conf.padding * i + conf.imageSize * (i - 1), conf.padding, conf.imageSize, conf.imageSize);
+    ctx.drawImage(img, conf.padding * i + conf.imageSize * (i - 1) + conf.dx, conf.padding + conf.dy, conf.imgWidth, conf.imgHeight);
+  }
+}
+
+function drawText(ctx, conf, words) {
+  // Set text style
+  ctx.fillStyle = '#000000';
+  ctx.font = '48px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let i = 1; i <= conf.numPictures; i++) {
+    ctx.fillText(words[i - 1], conf.padding * i + conf.imageSize * (i - 0.5), 0.9 * conf.height);
+  }
+}
+
 export function createImageBase64(img, words) {
     const numPictures = words.length;
     const imageSize = 245
@@ -27,23 +48,8 @@ export function createImageBase64(img, words) {
     const canvas = createCanvas(conf.width, conf.height);
     const ctx = canvas.getContext('2d');
   
-    ctx.fillStyle = '#DDDDDD';
-  
-    for (let i = 1; i <= numPictures; i++) {
-      ctx.fillRect(conf.padding * i + conf.imageSize * (i - 1), conf.padding, conf.imageSize, conf.imageSize);
-      ctx.drawImage(img, conf.padding * i + conf.imageSize * (i - 1) + conf.dx, conf.padding + conf.dy, conf.imgWidth, conf.imgHeight);
-    }
-  
-    // Set text style
-    ctx.fillStyle = '#000000';
-    ctx.font = '48px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-  
-    for (let i = 1; i <= numPictures; i++) {
-      ctx.fillText(words[i - 1], conf.padding * i + conf.imageSize * (i - 0.5), 0.9 * canvas.height);
-    }
-  
+    drawImages(ctx, conf, img);
+    drawText(ctx, conf, words);
     // Convert canvas to Base64 string (without the data:image/png;base64, prefix)
     return canvas.toDataURL().split(',')[1];
   }
