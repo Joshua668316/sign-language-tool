@@ -11,14 +11,32 @@ const { createCanvas } = require('canvas');
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
-    document.getElementById("insert-image").onclick = () => clearMessage(insertImage);
+    document.getElementById("insert-image").onclick = () => clearMessage(image => insertImage(createImageBase64()));
+    document.getElementById("fileElem").onchange = () => clearMessage(handleFiles);
   }
 });
 
+function handleFiles() {  
+  insertText(document.getElementById("fileElem").files[0].name);
+}
 
-function insertImage() {
+function insertText(text) {
   Office.context.document.setSelectedDataAsync(
-    createImageBase64(),
+    text,
+    {
+      coercionType: Office.CoercionType.Text
+    },
+    (asyncResult) => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        setMessage("Error: " + asyncResult.error.message);
+      }
+    }
+  );
+}
+
+function insertImage(image) {
+  Office.context.document.setSelectedDataAsync(
+    image,
     {
       coercionType: Office.CoercionType.Image
     },

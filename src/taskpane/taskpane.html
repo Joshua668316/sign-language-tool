@@ -29,6 +29,13 @@
         <div class="padding">
             <button class="ms-Button" id="insert-image">Insert Image</button><br/><br/>
             <input class="ms-input" id="text-input"><br/><br/>
+            <div id="drop-area">
+                <form class="my-form">
+                  <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+                  <input type="file" id="fileElem" multiple accept="image/*">
+                  <label class="button" for="fileElem">Select some files</label>
+                </form>
+            </div>  
         </div>
     </main>
     <section id="display-msg" class="ms-welcome__main">
