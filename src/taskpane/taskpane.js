@@ -11,8 +11,21 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
+    document.getElementById("fileElem").onchange = () => clearMessage(e => handleFiles(e));
   }
 });
+
+function handleFiles(e) {
+  var p = document.getElementById("file_names");
+  var files = document.getElementById("fileElem").files;
+  p.textContent = "";
+  for (let i = 0; i < files.length; i++) {
+    p.textContent += files[i].name;
+    if (i !== files.length - 1) {
+      p.textContent += ", "
+    }
+  }
+}
 
 async function readImages() {
   const files = document.getElementById("fileElem").files;
