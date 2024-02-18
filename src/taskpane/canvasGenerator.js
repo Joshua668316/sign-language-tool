@@ -27,13 +27,16 @@ function textTransformation(conf, i) {
   return {x, y}
 }
 
-function drawImages(ctx, conf, img) {
+function drawImages(ctx, conf, images, words) {
   ctx.fillStyle = '#DDDDDD';
  
   for (let i = 1; i <= conf.numPictures; i++) {
-    let {x, y, imgWidth, imgHeight} = imageTransformation(conf, img.naturalWidth, img.naturalHeight, i);
-    //ctx.fillRect((i - 1) * conf.imageSize, 0, conf.imageSize, conf.imageSize);
-    ctx.drawImage(img, x, y, imgWidth, imgHeight);
+    if (images.has(words[i - 1])) {
+      const img = images.get(words[i - 1]);
+      let {x, y, imgWidth, imgHeight} = imageTransformation(conf, img.naturalWidth, img.naturalHeight, i);
+      //ctx.fillRect((i - 1) * conf.imageSize, 0, conf.imageSize, conf.imageSize);
+      ctx.drawImage(img, x, y, imgWidth, imgHeight);
+    }
   }
 }
 
@@ -50,18 +53,18 @@ function drawText(ctx, conf, words) {
   }
 }
 
-export function createCanvasBase64(img, words) {
+export function createCanvasBase64(images, words) {
     const numPictures = words.length;
     const imageSize = 245
     const padding = 20;
     const textSpace = 80; 
 
-    const conf = new canvasConfig(imageSize, padding, textSpace, numPictures, img);
+    const conf = new canvasConfig(imageSize, padding, textSpace, numPictures);
 
     const canvas = createCanvas(conf.width, conf.height);
     const ctx = canvas.getContext('2d');
   
-    drawImages(ctx, conf, img);
+    drawImages(ctx, conf, images, words);
     drawText(ctx, conf, words);
     // Convert canvas to Base64 string (without the data:image/png;base64, prefix)
     return canvas.toDataURL().split(',')[1];

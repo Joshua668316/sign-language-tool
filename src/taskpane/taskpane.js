@@ -21,7 +21,7 @@ async function readImages() {
     return new Promise((resolve, reject) => {
       reader.onload = e => {
         const img = new Image();
-        img.onload = () => resolve({ name: file.name, image: img }); 
+        img.onload = () => resolve({ name: file.name.split(".")[0], image: img }); 
         img.onerror = reject; 
         img.src = e.target.result;
       };
@@ -36,7 +36,7 @@ async function readImages() {
 async function submitTextAndImages() {
   var words = document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
   const images = await readImages();
-  const base64Image = createCanvasBase64(images.get(images.keys().next().value), words);
+  const base64Image = createCanvasBase64(images, words);
   insertImage(base64Image);
 }
 
