@@ -26,10 +26,11 @@ function readImages(handleResult) {
 
 function submitTextAndImages() {
   const file = document.getElementById("fileElem").files[0];
+  var words = document.getElementById("text-input").value.split(/\s+/);
   readImages((result) => {
     const img = new Image();
     img.src = result;
-    const base64Image = createImageBase64(img.src)
+    const base64Image = createImageBase64(img.src, words)
     insertImage(base64Image);
   });
 }
@@ -49,8 +50,7 @@ function insertImage(image) {
 }
 
 
-function createImageBase64(base64Image) {
-  var words = document.getElementById("text-input").value.split(/\s+/);
+function createImageBase64(base64Image, words) {
   const numPictures = words.length;
   const imageSize = 245
   const padding = 20;
