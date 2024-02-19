@@ -1,0 +1,166 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
+ */
+
+ html,
+ body {
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     padding: 0;
+ }
+ 
+ ul {
+     margin: 0;
+     padding: 0;
+ }
+ 
+ .ms-welcome__header {
+    padding: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ .ms-welcome__main {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex: 1 0 0;
+    flex: 1 0 0;
+    padding: 10px 20px;
+ }
+ 
+ .ms-welcome__main > h2 {
+     width: 100%;
+     text-align: center;
+ }
+ 
+ .ms-welcome__features {
+     list-style-type: none;
+     margin-top: 20px;
+ }
+ 
+ .ms-welcome__features.ms-List .ms-ListItem {
+     padding-bottom: 20px;
+     display: -webkit-flex;
+     display: flex;
+ }
+ 
+ .ms-welcome__features.ms-List .ms-ListItem > .ms-Icon {
+     margin-right: 10px;
+ }
+ 
+ .ms-welcome__action.ms-Button--hero {
+     margin-top: 30px;
+ }
+ 
+.ms-Button.ms-Button--hero .ms-Button-label {
+  color: #0078d7;
+}
+
+.ms-Button.ms-Button--hero:hover .ms-Button-label,
+.ms-Button.ms-Button--hero:focus .ms-Button-label{
+  color: #005a9e;
+  cursor: pointer;
+}
+
+.ms-welcome__main .padding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ms-input {
+    font-size: 16px; /* Increase font size */
+    padding: 10px; /* Add padding inside the input for larger touch area */
+    height: auto; /* Let the height be defined by padding and font-size */
+    width: 100%; /* Set width to 100% if you want it to take up full container width */
+    max-width: 300px; /* Optional: Set maximum width if necessary */
+    box-sizing: border-box; /* To include padding in the width calculation */
+}
+
+.button {
+    cursor: pointer; 
+}
+
+b {
+    font-weight: bold;
+}
+
+#drop-area {
+    position: relative;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    width: 80%;
+    font-family: sans-serif;
+    margin: 30px auto;
+    padding: 20px;
+    text-align: center;
+}
+  
+.my-form {
+    text-align: center;
+}
+  
+#fileElem {
+    position: absolute; 
+    width: 100%;      
+    height: 100%;     
+    top: 0;            
+    left: 0;         
+    opacity: 0;        
+    cursor: pointer;   
+}
+  
+.button {
+    display: inline-block;
+    padding: 10px 0px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #008CBA;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+#insert-image {
+    position: relative;
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #008CBA;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+  
+.button:hover {
+    background-color: #005f73;
+}
+  
+#drop-area p {
+    margin-bottom: 15px;
+}
+
+#drop-area label {
+    display: block; /* Make the label fill the drop area */
+    width: 100%;
+    height: 100%;
+}
+  
+.button:active {
+    background-color: #002f4b;
+}
