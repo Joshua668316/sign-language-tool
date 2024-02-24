@@ -1,4 +1,6 @@
+import { getWords, getWordsLowerCase } from './wordMatching';
 const { createCanvas } = require('canvas');
+
 
 function canvasConfig(imageSize, padding, textSpace, numPictures) {
   this.imageSize = imageSize;
@@ -28,13 +30,10 @@ function textTransformation(conf, i) {
 }
 
 function drawImages(ctx, conf, images, words) {
-  //ctx.fillStyle = '#DDDDDD';
- 
   for (let i = 1; i <= conf.numPictures; i++) {
     if (images.has(words[i - 1])) {
       const img = images.get(words[i - 1]);
       let {x, y, imgWidth, imgHeight} = imageTransformation(conf, img.naturalWidth, img.naturalHeight, i);
-      //ctx.fillRect((i - 1) * conf.imageSize, 0, conf.imageSize, conf.imageSize);
       ctx.drawImage(img, x, y, imgWidth, imgHeight);
     }
   }
@@ -53,7 +52,10 @@ function drawText(ctx, conf, words) {
   }
 }
 
-export function createCanvasBase64(images, words) {
+export function createCanvasBase64(images, text) {
+    const words = getWords(text);
+    const wordsLowerCase = getWordsLowerCase(text);
+
     const numPictures = words.length;
     const imageSize = 245
     const padding = 20;
@@ -64,7 +66,7 @@ export function createCanvasBase64(images, words) {
     const canvas = createCanvas(conf.width, conf.height);
     const ctx = canvas.getContext('2d');
   
-    drawImages(ctx, conf, images, words);
+    drawImages(ctx, conf, images, wordsLowerCase);
     drawText(ctx, conf, words, images.size);
     // Convert canvas to Base64 string (without the data:image/png;base64, prefix)
     return canvas.toDataURL().split(',')[1];
