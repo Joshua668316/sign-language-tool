@@ -28,7 +28,7 @@ function textTransformation(conf, i) {
 }
 
 function drawImages(ctx, conf, images, words) {
-  ctx.fillStyle = '#DDDDDD';
+  //ctx.fillStyle = '#DDDDDD';
  
   for (let i = 1; i <= conf.numPictures; i++) {
     if (images.has(words[i - 1])) {
@@ -65,7 +65,7 @@ export function createCanvasBase64(images, words) {
     const ctx = canvas.getContext('2d');
   
     drawImages(ctx, conf, images, words);
-    drawText(ctx, conf, words);
+    drawText(ctx, conf, words, images.size);
     // Convert canvas to Base64 string (without the data:image/png;base64, prefix)
     return canvas.toDataURL().split(',')[1];
   }
