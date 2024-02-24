@@ -42,7 +42,7 @@ async function readImages() {
 }
 
 function getWords() {
-  return document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
+  return document.getElementById("text-input").value.match(/([\wäöüßÄÖÜ]+('[\wäöüßÄÖÜ]+)*)/g);
 }
 
 async function submitTextAndImages() {
