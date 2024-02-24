@@ -1,10 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
-/* global document, Office */
-
 import { createCanvasBase64 } from "./canvasGenerator";
 
 Office.onReady((info) => {
@@ -28,8 +21,10 @@ function handleFiles(e) {
 }
 
 async function readImages() {
+  const words = getWords();
   const files = document.getElementById("fileElem").files;
-  let imagePromises = Array.from(files).map(file => {
+  const filteredFiles = Array.from(files).filter(file => words.includes(file.name.split(".")[0]));
+  let imagePromises = filteredFiles.map(file => {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onload = e => {
@@ -46,8 +41,12 @@ async function readImages() {
   return new Map(images.map(obj => [obj.name, obj.image])); 
 }
 
+function getWords() {
+  return document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
+}
+
 async function submitTextAndImages() {
-  var words = document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
+  var words = getWords();
   const images = await readImages();
   const base64Image = createCanvasBase64(images, words);
   insertImage(base64Image);
