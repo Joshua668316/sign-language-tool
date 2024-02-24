@@ -1,5 +1,6 @@
 import { createCanvasBase64 } from "./canvasGenerator";
-import { matchFiles, getWords } from "./wordMatching";
+import { matchFiles } from "./wordMatching";
+import { readImages } from "./io";
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
@@ -29,29 +30,13 @@ function handleFiles(e) {
   }
 }
 
-async function readImages() {
-  const text = getTextInput();
-  const files = getFileInput();
-
-  let imagePromises = matchFiles(files, text).map(file => {
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => resolve({ name: file.name.split(".")[0].toLowerCase(), image: img }); 
-        img.onerror = reject; 
-        img.src = e.target.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  });
-  let images = await Promise.all(imagePromises); 
-  return new Map(images.map(obj => [obj.name, obj.image])); 
+async function loadImages() {
+  const files = matchFiles(getFileInput(), getTextInput());
+  return readImages(files);
 }
 
 async function submitTextAndImages() {
-  const images = await readImages();
+  const images = await loadImages();
   const base64Image = createCanvasBase64(images, getTextInput());
   insertImage(base64Image);
 }
