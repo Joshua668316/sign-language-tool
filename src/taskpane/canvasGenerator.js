@@ -59,7 +59,7 @@ export function createCanvasBase64(images, text) {
     const numPictures = words.length;
     const imageSize = 245
     const padding = 20;
-    const textSpace = 80; 
+    const textSpace = 0; 
 
     const conf = new canvasConfig(imageSize, padding, textSpace, numPictures);
 
@@ -67,7 +67,7 @@ export function createCanvasBase64(images, text) {
     const ctx = canvas.getContext('2d');
   
     drawImages(ctx, conf, images, wordsLowerCase);
-    drawText(ctx, conf, words, images.size);
+    //drawText(ctx, conf, words, images.size);
     // Convert canvas to Base64 string (without the data:image/png;base64, prefix)
     return canvas.toDataURL().split(',')[1];
   }
