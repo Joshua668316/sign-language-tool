@@ -6,7 +6,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
-    document.getElementById("fileElem").onchange = () => clearMessage(e => handleFiles(e));
+    document.getElementById("fileElem").onchange = () => clearMessage((e) => handleFiles(e));
   }
 });
 
@@ -25,7 +25,7 @@ function handleFiles(e) {
   for (let i = 0; i < files.length; i++) {
     p.textContent += files[i].name;
     if (i !== files.length - 1) {
-      p.textContent += ", "
+      p.textContent += ", ";
     }
   }
 }
@@ -45,7 +45,7 @@ function insertImage(image) {
   Office.context.document.setSelectedDataAsync(
     image,
     {
-      coercionType: Office.CoercionType.Image
+      coercionType: Office.CoercionType.Image,
     },
     (asyncResult) => {
       if (asyncResult.status === Office.AsyncResultStatus.Failed) {
