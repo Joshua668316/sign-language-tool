@@ -1,4 +1,6 @@
 import { createCanvasBase64 } from "./canvasGenerator";
+import { matchFiles } from "./wordMatching";
+import { readImages } from "./io";
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
@@ -7,6 +9,14 @@ Office.onReady((info) => {
     document.getElementById("fileElem").onchange = () => clearMessage(e => handleFiles(e));
   }
 });
+
+function getTextInput() {
+  return document.getElementById("text-input").value;
+}
+
+function getFileInput() {
+  return document.getElementById("fileElem").files;
+}
 
 function handleFiles(e) {
   var p = document.getElementById("file_names");
@@ -20,35 +30,14 @@ function handleFiles(e) {
   }
 }
 
-async function readImages() {
-  const words = getWords();
-  const files = document.getElementById("fileElem").files;
-  const filteredFiles = Array.from(files).filter(file => words.includes(file.name.split(".")[0]));
-  let imagePromises = filteredFiles.map(file => {
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => resolve({ name: file.name.split(".")[0], image: img }); 
-        img.onerror = reject; 
-        img.src = e.target.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  });
-  let images = await Promise.all(imagePromises); 
-  return new Map(images.map(obj => [obj.name, obj.image])); 
-}
-
-function getWords() {
-  return document.getElementById("text-input").value.match(/(\b[^\s]+\b)/g);
+async function loadImages() {
+  const files = matchFiles(getFileInput(), getTextInput());
+  return readImages(files);
 }
 
 async function submitTextAndImages() {
-  var words = getWords();
-  const images = await readImages();
-  const base64Image = createCanvasBase64(images, words);
+  const images = await loadImages();
+  const base64Image = createCanvasBase64(images, getTextInput());
   insertImage(base64Image);
 }
 
