@@ -28,6 +28,5 @@ export async function readWordCSV() {
       map.set(pair[0], pair[1]);
     }
   })
-  map.set('foo', 'bar');
   return map;
 }

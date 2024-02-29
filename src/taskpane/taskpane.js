@@ -2,12 +2,15 @@ import { createCanvasBase64 } from "./canvasGenerator";
 import { matchFiles } from "./wordMatching";
 import { readImages, readWordCSV } from "./io";
 
+let wordlist = new Map();
+
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
     document.getElementById("fileElem").onchange = () => clearMessage((e) => handleFiles(e));
-    document.getElementById("load-csv").onclick = () => clearMessage(loadCSV);
+    clearMessage(loadCSV);
+    document.getElementById("load-csv").onclick = () => clearMessage(insertText(wordlist.get('gesamten')));
   }
 });
 
@@ -31,9 +34,10 @@ function handleFiles(e) {
   }
 }
 
+
+
 async function loadCSV() {
-  const words = await readWordCSV();
-  insertText(words.get('mentaler'));
+  wordlist = await readWordCSV();
 }
 
 async function loadImages() {
