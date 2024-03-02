@@ -1,12 +1,13 @@
 import { createCanvasBase64 } from "./canvasGenerator";
-import { matchFiles } from "./wordMatching";
-import { readImages } from "./io";
+import { matchFiles, initWordList, getBasicWord } from "./wordMatching";
+import { readImages, readWordCSV } from "./io";
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.PowerPoint) {
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
-    document.getElementById("fileElem").onchange = () => clearMessage((e) => handleFiles(e));
+    document.getElementById("fileElem").onchange = () => clearMessage(handleFiles);
+    clearMessage(loadCSV);
   }
 });
 
@@ -18,7 +19,7 @@ function getFileInput() {
   return document.getElementById("fileElem").files;
 }
 
-function handleFiles(e) {
+function handleFiles() {
   var p = document.getElementById("file_names");
   var files = document.getElementById("fileElem").files;
   p.textContent = "";
@@ -28,6 +29,10 @@ function handleFiles(e) {
       p.textContent += ", ";
     }
   }
+}
+
+async function loadCSV() {
+  await initWordList();
 }
 
 async function loadImages() {
