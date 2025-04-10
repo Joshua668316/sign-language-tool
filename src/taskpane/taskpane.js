@@ -1,14 +1,12 @@
 import { createCanvasBase64 } from "./canvasGenerator";
-import { matchFiles, initWordList, getBasicWord } from "./wordMatching";
-import { readImages, readWordCSV } from "./io";
+import { matchFiles, initWordList } from "./wordMatching";
+import { readImages } from "./io";
 
 Office.onReady((info) => {
-  if (info.host === Office.HostType.PowerPoint) {
-    document.getElementById("app-body").style.display = "flex";
-    document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
-    document.getElementById("fileElem").onchange = () => clearMessage(handleFiles);
-    clearMessage(loadCSV);
-  }
+  document.getElementById("app-body").style.display = "flex";
+  document.getElementById("insert-image").onclick = () => clearMessage(submitTextAndImages);
+  document.getElementById("fileElem").onchange = () => clearMessage(handleFiles);
+  clearMessage(loadCSV);
 });
 
 function getTextInput() {
